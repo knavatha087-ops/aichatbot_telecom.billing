@@ -113,18 +113,20 @@ body {
 
 /* Chat Popup */
 .chat-popup {
-  width: 350px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.25));
+  width: 400px;  /* Increased width from 350px */
+  height: 500px; /* Added height for more message space */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.25));
   border-radius: 20px;
   backdrop-filter: blur(10px);
   display: none;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.5s ease-in-out;
 }
 
+/* Show state */
 .chat-popup.show {
   display: flex;
 }
