@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telecom Billing Chatbot</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <!-- Animated Wave Background -->
+  <div class="wave-container">
+    <div class="wave"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Info Panel -->
+    <section class="info-panel" aria-labelledby="site-title">
+      <h1 id="site-title">Telecom Billing System</h1>
+      <p>Welcome to our intelligent billing assistant. This chatbot helps you:</p>
+      <ul>
+        <li>Check your account balance instantly</li>
+        <li>View and download invoices</li>
+        <li>Resolve billing disputes</li>
+        <li>Get personalized plan recommendations</li>
+      </ul>
+      <p>Start chatting with our AI assistant to get instant help!</p>
+
+      <img src="chatbot.jpg" alt="Chatbot Illustration" class="chatbot-logo" />
+    </section>
+
+    <!-- Chatbot Section -->
+    <section class="chat-popup show" id="chatPopup" aria-label="Chat window">
+      <div class="chat-header">
+        <h2>Chat with Us 💬</h2>
+        <button class="close-btn" id="closeChat" aria-label="Close chat window">&times;</button>
+      </div>
+
+      <div id="chatbox" aria-live="polite" aria-atomic="false">
+        <p class="botText"><span>Hello! 👋 How can I assist you with your telecom billing today?</span></p>
+      </div>
+
+      <div id="userInput">
+        <input 
+          id="textInput" 
+          type="text" 
+          placeholder="Type your message..." 
+          aria-label="Type your message to chatbot"
+        />
+        <button id="buttonInput" aria-label="Send message">Send</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Floating Chat Toggle Button -->
+  <div class="chat-toggle" id="chatToggle" aria-label="Toggle chat window" style="display: none;">💬</div>
+
+  <!-- Script -->
+  <script>
+    // Function to send message
+    function getBotResponse() {
+      const rawText = $("#textInput").val().trim();
+      if (!rawText) return;
+
+      const userHtml = `<p class="userText"><span>${rawText}</span></p>`;
+      $("#textInput").val("");
+      $("#chatbox").append(userHtml);
+      $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+
+      // Simulated backend response
+      $.get("/get", { msg: rawText })
+        .done(function(data) {
+          const botHtml = `<p class="botText"><span>${data}</span></p>`;
+          $("#chatbox").append(botHtml);
+          $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        })
+        .fail(function() {
+          const errorHtml = `<p class="botText"><span>⚠️ Sorry, something went wrong. Please try again later.</span></p>`;
+          $("#chatbox").append(errorHtml);
+          $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        });
+    }
+
+    // Enter key to send message
+    $("#textInput").keypress(function(e) {
+      if (e.which === 13) getBotResponse();
+    });
+
+    // Button click to send message
+    $("#buttonInput").click(getBotResponse);
+
+    // Chat toggle elements
+    const chatPopup = document.getElementById("chatPopup");
+    const chatToggle = document.getElementById("chatToggle");
+    const closeChat = document.getElementById("closeChat");
+
+    // Initially open chat by default
+    window.addEventListener("load", () => {
+      chatPopup.classList.add("show");
+      chatToggle.style.display = "none"; // hide toggle when open
+    });
+
+    // When closed, show floating icon
+    closeChat.addEventListener("click", () => {
+      chatPopup.classList.remove("show");
+      chatToggle.style.display = "grid"; // show toggle
+    });
+
+    // When icon clicked, reopen chat
+    chatToggle.addEventListener("click", () => {
+      chatPopup.classList.add("show");
+      chatToggle.style.display = "none"; // hide toggle
+    });
+  </script>
+
+</body>
+</html>

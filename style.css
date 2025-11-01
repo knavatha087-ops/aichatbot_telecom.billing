@@ -1,0 +1,254 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: #fff;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #1c1f27, #12141a);
+  height: 100vh;
+}
+
+/* Animated Waves */
+.wave-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  width: 200%;
+  height: 100%;
+  background: rgba(0, 123, 255, 0.3);
+  border-radius: 1000%;
+  animation: wave 10s linear infinite;
+}
+
+.wave2 {
+  background: rgba(0, 123, 255, 0.2);
+  animation-duration: 15s;
+  animation-direction: reverse;
+}
+
+.wave3 {
+  background: rgba(0, 123, 255, 0.1);
+  animation-duration: 20s;
+}
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Container Layout */
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2rem;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* Info Panel */
+.info-panel {
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.info-panel h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #00bfff;
+}
+
+.info-panel ul {
+  margin-left: 1.5rem;
+}
+
+.info-panel p, .info-panel li {
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.chatbot-logo {
+  width: 100%;
+  border-radius: 15px;
+  margin-top: 1.5rem;
+}
+
+/* Chat Popup */
+.chat-popup {
+  width: 350px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+.chat-popup.show {
+  display: flex;
+}
+
+.chat-header {
+  background: rgba(0, 123, 255, 0.9);
+  color: #fff;
+  padding: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Chat Box Area */
+#chatbox {
+  padding: 1rem;
+  height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* BOT MESSAGES (Left) */
+.botText {
+  display: flex;
+  justify-content: flex-start;
+  animation: popIn 0.25s ease;
+}
+
+.botText span {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.6rem 1rem;
+  border-radius: 18px 18px 18px 0;
+  color: #fff;
+  max-width: 75%;
+  word-wrap: break-word;
+  line-height: 1.4;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+/* USER MESSAGES (Right) */
+.userText {
+  display: flex;
+  justify-content: flex-end;
+  animation: popIn 0.25s ease;
+}
+
+.userText span {
+  background: #00bfff;
+  padding: 0.6rem 1rem;
+  border-radius: 18px 18px 0 18px;
+  color: #fff;
+  max-width: 75%;
+  word-wrap: break-word;
+  line-height: 1.4;
+  display: inline-block;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 191, 255, 0.3);
+}
+
+/* Chat Input Area */
+#userInput {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#textInput {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+}
+
+#buttonInput {
+  background: #00bfff;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 0 0 15px 0;
+}
+
+/* Floating Toggle Button */
+.chat-toggle {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(0, 123, 255, 0.5);
+  transition: 0.3s;
+}
+
+.chat-toggle:hover {
+  background: #0099ff;
+  transform: scale(1.1);
+}
+
+/* Smooth Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Scrollbar Styling */
+#chatbox::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chatbox::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .chat-popup {
+    width: 90%;
+  }
+}
