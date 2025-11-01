@@ -28,13 +28,14 @@ body {
   bottom: 0;
   width: 200%;
   height: 100%;
-  background: rgba(0, 123, 255, 0.3);
+  background: rgba(0, 123, 255, 0.25);
   border-radius: 1000%;
   animation: wave 10s linear infinite;
+  filter: blur(2px);
 }
 
 .wave2 {
-  background: rgba(0, 123, 255, 0.2);
+  background: rgba(0, 123, 255, 0.15);
   animation-duration: 15s;
   animation-direction: reverse;
 }
@@ -66,34 +67,54 @@ body {
   padding: 2rem;
   border-radius: 20px;
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 123, 255, 0.4);
 }
 
 .info-panel h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #00bfff;
+  color: #00c6ff; /* brighter cyan */
+  text-shadow: 0 0 10px rgba(0, 198, 255, 0.4);
 }
 
+/* ✅ Added spacing below bullet list */
 .info-panel ul {
   margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
 }
 
-.info-panel p, .info-panel li {
+.info-panel p, 
+.info-panel li {
   color: #ddd;
   line-height: 1.6;
 }
 
+/* Chatbot Logo */
 .chatbot-logo {
-  width: 100%;
-  border-radius: 15px;
-  margin-top: 1.5rem;
+  width: 90%;              /* size control */
+  max-width: 320px;        /* prevents it from getting too big */
+  display: block;
+  margin: 2rem auto 0.5rem auto;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chatbot-logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.4);
 }
 
 /* Chat Popup */
 .chat-popup {
   width: 350px;
-  background: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.25));
   border-radius: 20px;
   backdrop-filter: blur(10px);
   display: none;
@@ -101,7 +122,7 @@ body {
   justify-content: space-between;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .chat-popup.show {
@@ -115,6 +136,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 20px 20px 0 0;
 }
 
 .close-btn {
@@ -177,7 +199,9 @@ body {
 /* Chat Input Area */
 #userInput {
   display: flex;
+  align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 #textInput {
@@ -187,16 +211,29 @@ body {
   outline: none;
   background: transparent;
   color: #fff;
+  font-size: 0.95rem;
+  min-width: 0;
 }
 
+#textInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ✅ Updated Send Button */
 #buttonInput {
-  background: #00bfff;
+  background: #007bff;
   color: white;
   border: none;
   padding: 0.8rem 1.2rem;
   cursor: pointer;
   font-weight: 600;
   border-radius: 0 0 15px 0;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+#buttonInput:hover {
+  background: #0099ff;
 }
 
 /* Floating Toggle Button */
@@ -220,9 +257,10 @@ body {
 .chat-toggle:hover {
   background: #0099ff;
   transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
 }
 
-/* Smooth Animations */
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -247,8 +285,37 @@ body {
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
+    padding: 1.5rem;
   }
+
   .chat-popup {
     width: 90%;
+    bottom: 20px;
+  }
+
+  #userInput {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  #textInput {
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+
+  #buttonInput {
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 0 0 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-popup {
+    width: 95%;
+  }
+
+  #buttonInput {
+    padding: 0.8rem;
   }
 }

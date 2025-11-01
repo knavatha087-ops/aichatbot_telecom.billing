@@ -30,10 +30,10 @@
       <h1 id="site-title">Telecom Billing System</h1>
       <p>Welcome to our intelligent billing assistant. This chatbot helps you:</p>
       <ul>
-        <li>Check your account balance instantly</li>
-        <li>View and download invoices</li>
-        <li>Resolve billing disputes</li>
-        <li>Get personalized plan recommendations</li>
+        <li>Check your account balance instantly.</li>
+        <li>Resolve billing disputes.</li>
+        <li>Get personalized plan recommendations.</li>
+        <li>Report issues and get instant support.</li>
       </ul>
       <p>Start chatting with our AI assistant to get instant help!</p>
 
@@ -44,7 +44,12 @@
     <section class="chat-popup show" id="chatPopup" aria-label="Chat window">
       <div class="chat-header">
         <h2>Chat with Us 💬</h2>
-        <button class="close-btn" id="closeChat" aria-label="Close chat window">&times;</button>
+
+        <!-- Refresh and Close Buttons -->
+        <div class="chat-actions">
+          <button class="refresh-btn" id="refreshChat" title="Refresh chat" aria-label="Refresh chat">🔄</button>
+          <button class="close-btn" id="closeChat" aria-label="Close chat window">&times;</button>
+        </div>
       </div>
 
       <div id="chatbox" aria-live="polite" aria-atomic="false">
@@ -58,7 +63,7 @@
           placeholder="Type your message..." 
           aria-label="Type your message to chatbot"
         />
-        <button id="buttonInput" aria-label="Send message">Send</button>
+        <button id="buttonInput" aria-label="Send message" disabled>Send</button>
       </div>
     </section>
   </div>
@@ -71,39 +76,55 @@
     // Function to send message
     function getBotResponse() {
       const rawText = $("#textInput").val().trim();
+
+      // Prevent sending empty or invalid text
       if (!rawText) return;
 
       const userHtml = `<p class="userText"><span>${rawText}</span></p>`;
       $("#textInput").val("");
+      $("#buttonInput").prop("disabled", true); // disable button again after sending
       $("#chatbox").append(userHtml);
       $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
 
       // Simulated backend response
       $.get("/get", { msg: rawText })
-        .done(function(data) {
+        .done(function (data) {
           const botHtml = `<p class="botText"><span>${data}</span></p>`;
           $("#chatbox").append(botHtml);
           $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
         })
-        .fail(function() {
+        .fail(function () {
           const errorHtml = `<p class="botText"><span>⚠️ Sorry, something went wrong. Please try again later.</span></p>`;
           $("#chatbox").append(errorHtml);
           $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
         });
     }
 
-    // Enter key to send message
-    $("#textInput").keypress(function(e) {
-      if (e.which === 13) getBotResponse();
+    // Enable/disable send button based on input
+    $("#textInput").on("input", function () {
+      const text = $(this).val().trim();
+      $("#buttonInput").prop("disabled", text.length === 0);
     });
 
-    // Button click to send message
-    $("#buttonInput").click(getBotResponse);
+    // Prevent sending when button is disabled
+    $("#buttonInput").click(function () {
+      if (!$(this).prop("disabled")) {
+        getBotResponse();
+      }
+    });
 
-    // Chat toggle elements
+    // Enter key to send message only if enabled
+    $("#textInput").keypress(function (e) {
+      if (e.which === 13 && !$("#buttonInput").prop("disabled")) {
+        getBotResponse();
+      }
+    });
+
+    // Chat toggle logic
     const chatPopup = document.getElementById("chatPopup");
     const chatToggle = document.getElementById("chatToggle");
     const closeChat = document.getElementById("closeChat");
+    const refreshChat = document.getElementById("refreshChat");
 
     // Initially open chat by default
     window.addEventListener("load", () => {
@@ -122,7 +143,35 @@
       chatPopup.classList.add("show");
       chatToggle.style.display = "none"; // hide toggle
     });
+
+    // Refresh chat functionality
+    refreshChat.addEventListener("click", () => {
+      $("#chatbox").html('<p class="botText"><span>Hello! 👋 How can I assist you with your telecom billing today?</span></p>');
+      $("#textInput").val("");
+      $("#buttonInput").prop("disabled", true);
+    });
   </script>
+
+  <style>
+    /* Extra styling for refresh button */
+    .chat-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .refresh-btn, .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .refresh-btn:hover {
+      transform: rotate(90deg);
+    }
+  </style>
 
 </body>
 </html>
